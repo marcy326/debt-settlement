@@ -1,0 +1,7 @@
+services:
+- type: web
+  name: deby-settlement
+  runtime: static
+  repo: https://github.com/marcy326/debt-settlement
+  buildCommand: yarn; yarn build
+  staticPublishPath: build
