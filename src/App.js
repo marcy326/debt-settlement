@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DebtForm from './components/DebtForm';
 import DebtResult from './components/DebtResult';
+import './App.css';
 
 function App() {
   const [people, setPeople] = useState([]);
@@ -8,12 +9,15 @@ function App() {
   const [error, setError] = useState('');
   const [totalAmount, setTotalAmount] = useState(0);
 
-  // グリーディ法でペア探索して最小の取引を計算する関数
-  const calculateTransactions = () => {
+  useEffect(() => {
     const total = people.reduce((sum, person) => sum + person.amount, 0);
     setTotalAmount(total);
+  }, [people]);
+
+  // グリーディ法でペア探索して最小の取引を計算する関数
+  const calculateTransactions = () => {
     // 金額の総和が0でない場合は警告を出して計算を実行しない
-    if (total !== 0) {
+    if (totalAmount !== 0) {
       setError('金額の総和が0になっていません');
       return;
     }

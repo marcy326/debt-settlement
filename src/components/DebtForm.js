@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../App.css';
 
 function DebtForm({ setPeople, people }) {
   const [name, setName] = useState('');
