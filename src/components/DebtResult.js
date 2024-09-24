@@ -7,7 +7,9 @@ function DebtResult({ transactions }) {
       <h2>Transactions</h2>
       <ul>
         {transactions.map((transaction, index) => (
-          <li key={index}>{transaction}</li>
+          <li key={index}>
+            <p>{transaction}</p>
+          </li>
         ))}
       </ul>
     </div>

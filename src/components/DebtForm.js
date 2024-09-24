@@ -32,7 +32,7 @@ function DebtForm({ setPeople, people }) {
         type="number" 
         value={amount} 
         onChange={(e) => setAmount(e.target.value)} 
-        placeholder="Amount (positive for lender, negative for borrower)" 
+        placeholder="Amount (+ for lender, - for borrower)" 
         required 
       />
       <button type="submit" className="submit">+ Add</button>

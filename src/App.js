@@ -99,7 +99,7 @@ function App() {
       <ul>
         {people.map((person, index) => (
           <li key={index}>
-            {person.name}: {person.amount}
+            <p>{person.name}: {person.amount}</p>
             <button onClick={() => removePerson(index)}>Delete</button>
           </li>
         ))}
