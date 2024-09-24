@@ -90,7 +90,7 @@ function App() {
       <DebtForm setPeople={setPeople} people={people} />
 
       {/* 追加したメンバーの表示 */}
-      <h2>Added People</h2>
+      <h2>Added People(Total: {totalAmount})</h2>
       <ul>
         {people.map((person, index) => (
           <li key={index}>
@@ -99,7 +99,6 @@ function App() {
           </li>
         ))}
       </ul>
-      <h3>Total Amount: {totalAmount}</h3>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {/* 取引の計算ボタン */}
       <button onClick={calculateTransactions}>Calculate Transactions</button>
