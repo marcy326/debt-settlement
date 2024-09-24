@@ -5,18 +5,30 @@ import DebtResult from './components/DebtResult';
 function App() {
   const [people, setPeople] = useState([]);
   const [transactions, setTransactions] = useState([]);
+  const [error, setError] = useState('');
+  const [totalAmount, setTotalAmount] = useState(0);
 
   // グリーディ法でペア探索して最小の取引を計算する関数
   const calculateTransactions = () => {
-    let lenders = people.filter(p => p.amount > 0).sort((a, b) => b.amount - a.amount);
-    let borrowers = people.filter(p => p.amount < 0).sort((a, b) => a.amount - b.amount);
+    const total = people.reduce((sum, person) => sum + person.amount, 0);
+    setTotalAmount(total);
+    // 金額の総和が0でない場合は警告を出して計算を実行しない
+    if (total !== 0) {
+      setError('金額の総和が0になっていません');
+      return;
+    }
+    // エラーをクリア
+    setError('');
+
+    // originalPeople を people にコピー
+    const peopleCopy = people.map(person => ({ ...person }));
+
+    let lenders = peopleCopy.filter(p => p.amount > 0).sort((a, b) => b.amount - a.amount);
+    let borrowers = peopleCopy.filter(p => p.amount < 0).sort((a, b) => a.amount - b.amount);
     const results = [];
   
-    let lenderIndex = 0;
-    let borrowerIndex = 0;
-  
     // 同値のペアを先に探す
-    while (lenderIndex < lenders.length && borrowerIndex < borrowers.length) {
+    while (lenders.length > 0 || borrowers.length > 0) {
       let hasEquivalent = false;
       let equivalentLenderIndex = -1;
       let equivalentBorrowerIndex = -1;
@@ -44,26 +56,26 @@ function App() {
   
         lender.amount = 0;
         borrower.amount = 0;
-  
-        lenderIndex++;
-        borrowerIndex++;
       } else {
         // 同値のペアがない場合、通常の取引を行う
-        const lender = lenders[lenderIndex];
-        const borrower = borrowers[borrowerIndex];
+        const lender = lenders[0];
+        const borrower = borrowers[0];
         const transferAmount = Math.min(lender.amount, -borrower.amount);
   
         results.push(`${borrower.name} pays ${lender.name} ${transferAmount}`);
   
         lender.amount -= transferAmount;
         borrower.amount += transferAmount;
-  
-        if (lender.amount === 0) lenderIndex++;
-        if (borrower.amount === 0) borrowerIndex++;
       }
+      lenders = peopleCopy.filter(p => p.amount > 0).sort((a, b) => b.amount - a.amount);
+      borrowers = peopleCopy.filter(p => p.amount < 0).sort((a, b) => a.amount - b.amount);
     }
   
     setTransactions(results);
+  };
+
+  const removePerson = (index) => {
+    setPeople(people.filter((_, i) => i !== index));
   };
 
   return (
@@ -71,16 +83,20 @@ function App() {
       <h1>Debt Settlement App</h1>
 
       {/* メンバー入力フォーム */}
-      <DebtForm setPeople={setPeople} />
+      <DebtForm setPeople={setPeople} people={people} />
 
       {/* 追加したメンバーの表示 */}
       <h2>Added People</h2>
       <ul>
         {people.map((person, index) => (
-          <li key={index}>{person.name}: {person.amount}</li>
+          <li key={index}>
+            {person.name}: {person.amount}
+            <button onClick={() => removePerson(index)}>Delete</button>
+          </li>
         ))}
       </ul>
-
+      <h3>Total Amount: {totalAmount}</h3>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       {/* 取引の計算ボタン */}
       <button onClick={calculateTransactions}>Calculate Transactions</button>
 

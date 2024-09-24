@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
 
-function DebtForm({ setPeople }) {
+function DebtForm({ setPeople, people }) {
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (people.some(person => person.name === name)) {
+      setError('同じ名前のメンバーが既に存在します。');
+      return;
+    }
     setPeople(prev => [...prev, { name, amount: parseFloat(amount) }]);
     setName('');
     setAmount('');
+    setError('');
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <input 
         type="text" 
         value={name} 
