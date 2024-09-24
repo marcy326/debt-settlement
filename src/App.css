@@ -22,24 +22,45 @@ form {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  align-items: center;
 }
 
-input, button {
+input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 18px;
+  width: 90%;
 }
 
 button {
-  background-color: #007bff;
-  color: #fff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 18px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 button:hover {
   background-color: #0056b3;
+}
+
+button.submit {
+  background-color: #007bff;
+  color: #fff;
+  padding: 8px;
+  width: auto;
+  margin: 0 auto;
+}
+
+button.calculate {
+  background-color: #28a745;
+  color: #fff;
+  padding: 12px;
+  width: auto;
+  margin: 0 auto;
+  display: block;
 }
 
 ul {

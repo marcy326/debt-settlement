@@ -9,7 +9,7 @@ function DebtForm({ setPeople, people }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (people.some(person => person.name === name)) {
-      setError('同じ名前のメンバーが既に存在します。');
+      setError('A member with the same name already exists.');
       return;
     }
     setPeople(prev => [...prev, { name, amount: parseFloat(amount) }]);
@@ -35,7 +35,7 @@ function DebtForm({ setPeople, people }) {
         placeholder="Amount (positive for lender, negative for borrower)" 
         required 
       />
-      <button type="submit">Add Person</button>
+      <button type="submit" className="submit">+ Add</button>
     </form>
   );
 }
